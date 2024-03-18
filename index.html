@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>长春天气状况数据可视化</title>
+		<script src="./js/echarts.min.js"></script>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			.container {
+				width: 1920px;
+				height: 1080px;
+				background: linear-gradient(200deg, #5596eb, #3e955a);
+				color: #ffffff;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				height: 75px;
+				width: 100%;
+				//background: url(./imgs/01.png);
+			}
+
+			.header-l {
+				font-size: 20px;
+				margin-left: 59px;
+			}
+
+			.header-m {
+				font-size: 40px;
+				margin-right: 59px;
+			}
+
+			.header-r {
+				font-size: 20px;
+				margin-right: 59px;
+			}
+
+			.body {
+				margin-top: 33px;
+				display: flex;
+				height: 968px;
+				width: 1826px;
+				justify-content: space-between;
+			}
+
+			.body-left {
+				width: 1053px;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				height: 100%;
+				align-content: space-between;
+			}
+
+			.body-left-1 {
+				width: 1053px;
+				height: 634px;
+				box-sizing: border-box;
+				border-radius: 15px;
+				/*边框弧度*/
+				background: linear-gradient(200deg, #5596eb, #3e955a);
+				border: solid 5px #2b601d;
+				position: relative;
+			}
+
+			.body-left-1 span:nth-child(1) {
+				position: absolute;
+				/* padding: 15px; */
+				padding: 40px 0 0 10px;
+				left: -3px;
+				top: -3px;
+				border-style: solid;
+				border-color: #f29450;
+				/* 上右下左 */
+				border-width: 5px 0 0 5px;
+			}
+
+			.body-left-1 span:nth-child(2) {
+				position: absolute;
+				padding: 15px;
+				right: -3px;
+				top: -3px;
+				border-style: solid;
+				border-color: #f2ab59;
+				/* 上右下左 */
+				border-width: 5px 5px 0 0;
+			}
+
+			.body-left-1 span:nth-child(3) {
+				position: absolute;
+				padding: 15px;
+				right: -3px;
+				bottom: -3px;
+				border-style: solid;
+				border-color: #f2ab59;
+				/* 上右下左 */
+				border-width: 0 5px 5px 0;
+			}
+
+			.body-left-1 span:nth-child(4) {
+				position: absolute;
+				padding: 15px;
+				left: -3px;
+				bottom: -3px;
+				border-style: solid;
+				border-color: #f2ab59;
+				/* 上右下左 */
+				border-width: 0 0 5px 5px;
+			}
+
+			.body-left-2 {
+				width: 465px;
+				height: 311px;
+				box-sizing: border-box;
+				background-color: #73a781;
+				border-radius: 15px 25px 15px 25px;
+				border-style: solid;
+				border-color: #8daa86
+			}
+
+			.body-left-3 {
+				width: 568px;
+				height: 311px;
+				box-sizing: border-box;
+				border-radius: 50px 0px 50px 0px;
+				background: linear-gradient(200deg, #c4d9a5, #3e955a);
+				border-color: #a9f2b8;
+			}
+
+			.body-right {
+				width: 754px;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+
+			.body-right-1 {
+				box-sizing: border-box;
+				width: 754px;
+				height: 304px;
+				background: linear-gradient(200deg, #d3ebb3, #3e955a);
+				border-radius: 15px 0px 15px 0px;
+				border-style: solid;
+				border-color: #cbfade;
+			}
+
+			.body-right-2 {
+				width: 754px;
+				height: 310px;
+				box-sizing: border-box;
+				background-color: #73a781;
+				border: solid 5px #2b601d;
+				border-radius: 15px 25px 15px 25px;
+				border-color: #2b8a18;
+			}
+
+			.body-right-3 {
+				width: 755px;
+				height: 311px;
+				box-sizing: border-box;
+				background-color: #73a781;
+				background: linear-gradient(200deg, #5d8b58, #4bb46c);
+				border-style: solid;
+				border-radius: 15px;
+				border-color: #8ead87;
+			}
+		</style>
+		<script src="js/echarts.min.js"></script>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="header-l">2023年06月21日 星期二</div>
+				<div class="header-m">长春市天气数据可视化</div>
+				<div class="header-r">23° 西南风 空气佳</div>
+			</div>
+			<div class="body">
+				<div class="body-left">
+					<div class="body-left-1">
+						<div style="width:100%;height:100%;display:flex">
+							<div id="leftOneI" style="width:50%;height:100%"></div>
+							<div style="width:50%;height:100%">
+								<div id="leftOneII_I" style="width:100%;height:50%"></div>
+								<div id="leftOneII_II" style="width:100%;height:50%"></div>
+							</div>
+						</div>
+					</div>
+					<div class="body-left-2">
+						<div id="leftTwo" style="width:100%;height:100%"></div>
+					</div>
+					<div class="body-left-3">
+						<div id="leftThree" style="width:100%;height:100%;display:flex">
+							<div id="leftThreeI" style="width:50%;height:100%"></div>
+							<div id="leftThreeII" style="width:50%;height:100%"></div>
+						</div>
+					</div>
+				</div>
+				<div class="body-right">
+					<div class="body-right-1">
+						<div style="width:100%;height:100%;display:flex">
+							<div id="rightOneI" style="width:40%;height:100%"></div>
+							<div id="rightOneII" style="width:60%;height:100%"></div>
+						</div>
+					</div>
+					<div class="body-right-2">
+						<div id="rightTwo" style="width:100%;height:100%"></div>
+					</div>
+					<div class="body-right-3">
+						<div style="width:100%;height: 100%;display:flex">
+							<div id="rightThreeI" style="width:50%;height: 100%"></div>
+							<div id="rightThreeII" style="width:50%;height: 100%"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		/*热力图*/
+		var mychart1 = echarts.init(document.getElementById("leftOneI"));
+		$.getJSON("https://geo.datav.aliyun.com/areas_v3/bound/220100_full.json", function(r) {
+			echarts.registerMap("长春市", r)
+			var option = {
+				title: {
+					text: '长春市各地近七日平均气温',
+					textStyle: {
+						color: 'white',
+						fontSize: 20,
+					},
+					top: '10%',
+					left: 'center',
+					position: 'top',
+				},
+				tooltip: {
+					formatter: function(r) {
+						return r.name + '气温:' + r.value;
+					}
+				},
+				/*分段型*/
+				visualMap: {
+					//连续型
+					top: '30%',
+					type: 'piecewise',
+					text: ['高', '低', ],
+					min: 0,
+					splitNumber: 5,
+					pieces: [{
+							gt: 35,
+							label: '超级热',
+							color: '#7f1100'
+						},
+						{
+							gte: 20,
+							lte: 35,
+							label: '热',
+							color: '#ff5428'
+						},
+						{
+							gt: 10,
+							lte: 20,
+							label: '舒适',
+							color: '#ff8c71'
+						},
+						{
+							gt: 0,
+							lte: 10,
+							label: '凉爽',
+							color: '#55aaff'
+						},
+						{
+							lte: 0,
+							label: '冷',
+							color: '#aaffff'
+						}
+					],
+					showLabel: true,
+					textStyle: {
+						color: 'white',
+					}
+				},
+				series: {
+					//name: 'XX分布详情',
+					height: '70%',
+					top: '20%',
+					type: 'map',
+					map: "长春市",
+					select: {
+						itemStyle: {
+							color: 'pink',
+						}
+					},
+					label: {
+						show: true,
+						fontSize: 13,
+						distance: 2,
+					},
+					itemStyle: {
+						borderColor: 'rgba(195,195,195,0.7)',
+					},
+					data: [{
+							name: '榆树市',
+							value: 20
+						},
+						{
+							name: '宽城区',
+							value: 12
+						},
+						{
+							name: '绿园区',
+							value: 15
+						},
+						{
+							name: '朝阳区',
+							value: 10
+						},
+						{
+							name: '南关区',
+							value: 9
+						},
+						{
+							name: '公主岭市',
+							value: 5
+						},
+						{
+							name: '双阳区',
+							value: 0
+						},
+						{
+							name: '二道区',
+							value: 6
+						},
+						{
+							name: '德惠市',
+							value: 22
+						},
+						{
+							name: '九台区',
+							value: 10
+						},
+						{
+							name: '农安县',
+							value: 25
+						},
+					],
+				}
+			}
+			//5.将配置项设置给echarts实例对象
+			mychart1.setOption(option)
+		})
+
+		/*七日气温*/
+		var mychart = echarts.init(document.getElementById("leftOneII_I"))
+		var options = {
+			title: {
+				text: "近七日气温",
+				left: '40%',
+				top: '10',
+				textStyle: {
+					color: '#ffffff'
+				},
+
+			},
+			xAxis: {
+				//直角坐标系X轴,类型为种类
+				type: 'category',
+				data: ["6.17", "6.18", "前天", "昨天", "今天", "明天", "后天"],
+				axisTick: {
+					show: false,
+				},
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: "#ffffff"
+					},
+				},
+				//类别数据要写到类别为种类的轴中
+			},
+			yAxis: {
+				type: 'value',
+				//直角坐标系X轴，类型为值 
+				interval: 5,
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: "#3b6291"
+					},
+				},
+				max: 70,
+				axisLabel: {
+					show: false // 不显示坐标轴上的文字
+				},
+				axisTick: {
+					show: true, // 不显示坐标轴刻度线
+					color: '#81aaa5'
+				},
+
+			},
+			series: [{
+					stack: 'a',
+					type: 'bar',
+					barWidth: '10',
+					data: [20, 18, 17, 17, 18, 20, 21, ],
+					//[356,550,200,400],
+					label: {
+						show: true,
+						position: "insideTop",
+						color: "#ffffff"
+					},
+					color: "transparent",
+				},
+				{
+					stack: 'a',
+					type: 'bar',
+					barWidth: '4',
+					data: [33, 24, 25, 28, 29, 31, 31, ],
+					//[356,550,200,400],
+					label: {
+						show: true,
+						position: "top",
+						color: "#ffffff"
+					},
+					color: "#fc796d",
+					itemStyle: {
+						emphasis: {
+							barBorderRadius: 30
+						},
+						normal: {
+							barBorderRadius: [20, 20, 20, 20, 20, 20, 20],
+						},
+					},
+				},
+				{
+					type: 'line',
+					data: [37, 33, 36, 33, 36, 38, 37],
+					smooth: true,
+					emphasis: {
+						itemStyle: {
+							color: 'red', //这里设置的拐点颜色
+							borderColor: "green", //  拐点边框颜色
+							borderWidth: 6, //  拐点边框宽度
+							shadowColor: "yellow", //  阴影颜色
+							shadowBlur: 4, //  阴影渐变范围控制
+						},
+					},
+				}
+
+			]
+
+		}
+		mychart.setOption(options)
+
+		/*七天降雨量*/
+		var mychart = echarts.init(document.getElementById("leftOneII_II"))
+		var options = {
+			title: {
+				text: "近七日降雨量(mm)",
+				left: '40%',
+				position: 'top',
+				textStyle: {
+					color: '#ffffff'
+				},
+
+			},
+			legend: {
+				top: 30,
+			},
+			tooltip: {
+				formatter: function(r) {
+					return r.seriesName + ':' + r.value;
+				}
+			},
+			//标题组件
+			xAxis: {
+				//直角坐标系X轴,类型为种类
+				type: 'category',
+				data: ["6.15", "6.16", "6.17", "6.18", "前天", "昨天", "今天"],
+				axisTick: {
+					show: false,
+				},
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: "#ffffff"
+					},
+				},
+				//类别数据要写到类别为种类的轴中
+			},
+			yAxis: {
+				type: 'value',
+				//直角坐标系X轴，类型为值 
+				max: 60,
+				interval: 10,
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: "#3b6291"
+					},
+				},
+			},
+			series: [
+				//数据通常放在series属性当中，类型为柱状图
+				{
+					max: 40,
+					type: 'bar',
+					barWidth: '10',
+					data: [20, 18, 17, 17, 18, 20, 21, ],
+					//[356,550,200,400],
+					label: {
+						show: true,
+						position: "top",
+					},
+					name: '长春市降雨量',
+					itemStyle: {
+						emphasis: {
+							barBorderRadius: 30
+						},
+						normal: {
+							barBorderRadius: [20, 20, 20, 20, 20, 20, 20],
+						},
+					},
+				},
+				{
+					max: 40,
+					type: 'bar',
+					barWidth: '10',
+					data: [10, 24, 25, 28, 29, 31, 31, ],
+					//[356,550,200,400],
+					label: {
+						show: true,
+						position: "top",
+					},
+					color: "#a3fcb1",
+					name: '吉林省平均降雨量',
+				}
+			]
+
+		}
+		mychart.setOption(options)
+
+		/*当日空气质量评估分析*/
+		var mychart = echarts.init(document.getElementById('rightOneI'));
+		var option = {
+			title: {
+				text: '空气质量对比',
+				textStyle: {
+					color: 'white',
+					position: 'top',
+				},
+			},
+			tooltip: {},
+			radar: {
+				indicator: [{
+						name: 'PM10',
+						max: 800
+					},
+					{
+						name: 'PM2.5',
+						max: 800,
+						color: 'red'
+					}, // 标签设置为红色
+					{
+						name: 'NO2',
+						max: 800
+					},
+					{
+						name: 'SO2',
+						max: 800
+					},
+					{
+						name: 'O3',
+						max: 800
+					},
+					{
+						name: 'CO',
+						max: 800
+					}
+				],
+				shape: 'circle',
+				radius: '75%',
+				//指的是里面三条斜线：坐标轴轴线
+				axisLine: {
+					lineStyle: {
+						color: '#aa00ff',
+						width: 2,
+					},
+				},
+				splitArea: {
+					show: true,
+					color: ['rgba(250,250,250,0.3)', 'rgba(200,200,200,0.3)']
+				},
+				//坐标分割线
+				splitLine: {
+					lineStyle: {
+						color: '#94aa8f',
+						width: 2,
+					}
+
+				},
+			},
+			series: {
+				type: 'radar',
+				lineStyle: {
+					color: 'gray',
+				},
+
+				data: [{
+						value: [200, 500, 200, 300, 100, 300],
+						name: '各污染指标限值',
+						areaStyle: {
+							color: 'pink',
+						},
+						itemStyle: {
+							color: '#b8ffc1'
+						},
+					},
+					{
+						value: [200, 500, 100, 12, 13, 45],
+						name: '当日空气各污染指标',
+						areaStyle: {
+							color: '#aaffff',
+						}
+					},
+				]
+			}
+
+		}
+		mychart.setOption(option);
+		
+		/*平行图*/
+		var mychart = echarts.init(document.getElementById("rightOneII"));
+		var option = {
+			//color: ["#c23531", "#91c7ae", "#dd8668"],
+			parallelAxis: [{
+					dim: 0,
+					name: "日期",
+					inverse: true,
+					max: 15,
+					nameLocation: "start"
+				},
+				{
+					dim: 1,
+					name: "AQI"
+				},
+				{
+					dim: 2,
+					name: "PM2.5"
+				},
+				{
+					dim: 3,
+					name: "PM10"
+				},
+				{
+					dim: 4,
+					name: " CO"
+				},
+				{
+					dim: 5,
+					name: "NO2"
+				},
+				{
+					dim: 6,
+					name: "SO2"
+				},
+				{
+					dim: 7,
+					name: "等级",
+					type: "category",
+					data: ["优", "良", "轻度污染", "中度污染", "重度污染", "严重污染"]
+				},
+			],
+			parallel: {
+				left: "5%",
+				right: "13%",
+				bottom: "10%",
+				top: "20%",
+				parallelAxisDefault: {
+					type: "value",
+					name: "AQI指数",
+					nameLocation: "end",
+					nameGap: 20,
+					nameTextStyle: {
+						fontSize: 12
+					},
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: 'white',
+						},
+		
+					},
+					axisTick: {
+						lineStyle: {
+							color: 'pink',
+							width: 2,
+						}
+					}
+				}
+			},
+			//调色盘
+			color: [{
+				type: 'linear',
+				x: 0, //控制左右
+				y: 1, //控制上下 
+				x2: 1, //控制左右
+				y2: 0, //控制上下
+				colorStops: [{
+					offset: 0,
+					color: 'red' // 0% 处的颜色
+				}, {
+					offset: 1,
+					color: 'blue' // 100% 处的颜色
+				}],
+				global: false // 缺省为 false
+			}, ],
+			series: [{
+				name: "长春市",
+				type: "parallel",
+				lineStyle: {
+					//color: 'red',
+					width: 3,
+				},
+				data: [
+					[1, 267, 216, 280, 4.8, 108, 64, "重度污染"],
+					[2, 25, 11, 21, 0.65, 34, 9, "优"],
+					[3, 39, 19, 38, 0.57, 31, 15, "优"],
+					[4, 33, 7, 29, 0.33, 16, 6, "优"],
+					[5, 185, 127, 216, 2.52, 61, 27, "中度污染"],
+					[6, 82, 58, 90, 1.77, 68, 33, "良"],
+					[7, 74, 49, 77, 1.46, 48, 27, "良"],
+					[8, 78, 55, 80, 1.29, 59, 29, "良"],
+					[9, 267, 216, 280, 4.8, 108, 64, "重度污染"],
+					[10, 185, 127, 216, 2.52, 61, 27, "中度污染"],
+					[11, 39, 19, 38, 0.57, 31, 15, "优"],
+					[12, 41, 11, 40, 0.43, 21, 7, "优"],
+					[13, 64, 38, 74, 1.04, 46, 22, "良"],
+					[14, 108, 79, 120, 1.7, 75, 41, "轻度污染"],
+					[15, 108, 63, 116, 1.48, 44, 26, "轻度污染"],
+				]
+			}],
+		}
+		mychart.setOption(option);
+
+		/*今日降水概率*/
+		var mychart = echarts.init(document.getElementById("leftTwo"))
+		//   <!--指定配置项和数据--leftTwo
+		var options = {
+			title: {
+				text: "按小时降雨概率",
+				left: '10%',
+				top: '10',
+				textStyle: {
+					color: 'white',
+					fontSize: 20
+				}
+			},
+
+			legend: {
+				left: 492,
+				top: 69,
+				itemWidth: 36,
+				itemHeight: 20,
+				itemGap: 26,
+				textStyle: {
+					color: 'pink',
+					rich: {
+						b: {
+							align: 'center',
+						}
+					},
+				},
+			},
+
+			color: ['#0d1a92', '#0263ff'],
+			grid: {
+				top: 70,
+				left: 30,
+				right: 17,
+				bottom: 25,
+				width: '90%'
+			},
+			//标题组件
+			xAxis: {
+				//直角坐标系X轴,类型为种类
+				type: 'category',
+				data: ['0:00', '2:00', '4:00', '6:00',
+					'8:00', '10:00', '12:00', '14:00',
+					'16:00', '18:00', '20:00', '22:00'
+				],
+				axisTick: {
+					show: false
+				},
+				axisLabel: {
+					// interval:4,
+					color: 'white'
+				},
+				splitLine: {
+					show: true,
+					interval: 1
+				},
+				// axisLine:{
+				// 	show:true,
+				// 	lineStyle:{
+				// 		color:'white'
+				// 	}
+				// }
+				//类别数据要写到类别为种类的轴中
+			},
+			yAxis: [{
+				name: '%',
+				type: 'value',
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: 'white'
+					}
+				},
+				interval: 10
+			}],
+			series: [{
+				//数据通常放在series属性当中，类型为柱状图
+				type: 'line',
+				lineStyle: {
+					color: 'white'
+				},
+				areaStyle: {
+					color: '#10327d'
+				},
+				symbolSize: 8,
+				data: [20, 30, 40, 45,
+					50, 56, 70, 80,
+					69, 59, 40, 30
+				],
+			}, ]
+		}
+		mychart.setOption(options)
+
+		/*日出日落*/
+		var mychart = echarts.init(document.getElementById("rightTwo"))
+		var options = {
+			title: {
+				text: "当日日出日落时间",
+				left: '10%',
+				top: '10',
+				textStyle: {
+					color: 'white',
+					fontSize: 20
+				}
+			},
+
+			legend: {
+				left: 492,
+				top: 69,
+				itemWidth: 36,
+				itemHeight: 20,
+				itemGap: 26,
+				textStyle: {
+					color: 'pink',
+					rich: {
+						b: {
+							align: 'center',
+						}
+					},
+				},
+			},
+
+			color: ['pink', 'orange'],
+			grid: {
+				top: 100,
+				left: 50,
+				right: 17,
+				bottom: 25,
+				width: '87%'
+			},
+			//标题组件
+			xAxis: [{
+					name: '小时',
+					type: 'value',
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: 'white'
+						}
+					},
+					interval: 3
+				},
+				{
+					type: 'value',
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: 'white'
+						}
+					},
+					interval: 3
+				}
+				//直角坐标系X轴,类型为种类
+
+				//类别数据要写到类别为种类的轴中
+			],
+			yAxis: {
+				type: 'category',
+				data: ["6.17", "6.18", "前天", "昨天", "今天", "明天", "后天"],
+				axisTick: {
+					show: false
+				},
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: 'white'
+					}
+				},
+
+			},
+			series: [{
+					//数据通常放在series属性当中，类型为柱状图
+					name: '日出',
+					type: 'bar',
+					barWidth: 10,
+					data: [5, 6, 6.4, 5.2, 5.5, 5.6, 5, 6.4],
+					label: { //标签
+						show: true,
+						position: 'top',
+						color: '#ffffff'
+					},
+				},
+				{
+					//数据通常放在series属性当中，类型为柱状图
+					name: '日落',
+					type: 'bar',
+					barWidth: 10,
+					data: [15.7, 18.5, 17.6, 16.8, 15.5, 15.6, 17.9],
+					label: { //标签
+						show: true,
+						position: 'top',
+						color: '#ffffff'
+					},
+				}
+			]
+		}
+		mychart.setOption(options)
+
+		/*风力图*/
+		var mychart2 = echarts.init(document.getElementById("leftThreeI"))
+		var options1 = {
+			tooltip: {},
+			series: [{
+					center: ["50%", "90%"],
+					type: 'gauge',
+					min: 0,
+					max: 12,
+					startAngle: 180, //起始角度
+					endAngle: 0,
+					axisLine: {
+						//是否在两端显示成圆形
+						roundCap: 'true',
+						lineStyle: {
+							width: 20,
+						},
+						color: 'red',
+					},
+
+					//仪表盘分割段数
+					splitNumber: 6,
+					axisTick: {
+						splitNumber: 2,
+
+					},
+					axisLabel: {
+						distance: 25,
+					},
+					progress: {
+						show: 'true',
+						width: 20,
+						roundCap: 'true',
+						itemStyle: {
+							color: {
+								type: 'linear',
+								x: 1,
+								y: 0,
+								x2: 0,
+								y2: 1,
+								colorStops: [{
+										offset: 0,
+										color: '#345ec1' // 0% 处的颜色
+									},
+									{
+										offset: 1,
+										color: 'transparent' // 100% 处的颜色
+									}
+								],
+								global: false // 缺省为 false
+							}
+						},
+					},
+					data: [{
+						value: '6',
+						name: '平均风力',
+						detail: {
+							show: false,
+						},
+						color: 'white'
+					}],
+				},
+				{
+					center: ["50%", "40%"],
+					type: 'gauge',
+					min: 35,
+					max: 75,
+					//radius:["30%","60%"],
+					startAngle: 180, //起始角度
+					endAngle: 0,
+					axisLine: {
+						//是否在两端显示成圆形
+						roundCap: 'true',
+						lineStyle: {
+							width: 20,
+						},
+					},
+					//仪表盘分割段数
+					splitNumber: 8,
+					axisTick: {
+						splitNumber: 2,
+
+					},
+					axisLabel: {
+						distance: 25,
+					},
+					progress: {
+						show: 'true',
+						width: 20,
+						roundCap: 'true',
+						itemStyle: {
+							color: {
+								type: 'linear',
+								x: 1,
+								y: 0,
+								x2: 0,
+								y2: 1,
+								colorStops: [{
+										offset: 0,
+										color: '#9c6230' // 0% 处的颜色
+									},
+									{
+										offset: 1,
+										color: '#abda95' // 100% 处的颜色
+									}
+								],
+								global: false // 缺省为 false
+							}
+						},
+
+
+					},
+
+					data: [{
+						value: '45',
+						name: '平均湿度',
+						detail: {
+							show: false,
+						},
+					}],
+				},
+
+			]
+
+		};
+		setInterval(function() {
+			const random = +(Math.random() * 12).toFixed(2);
+			const random1 = +(Math.random() * 75).toFixed(2);
+			mychart2.setOption({
+				series: [{
+						data: [{
+							value: random,
+							name: '平均风力',
+							detail: {
+								show: false,
+							}
+						}]
+					},
+					{
+						data: [{
+							value: random1,
+							name: '平均湿度',
+							detail: {
+								show: false,
+							}
+						}]
+					}
+				]
+			});
+		}, 2000);
+		options1 && mychart2.setOption(options1);
+
+		/*风向图*/
+		var mychart3 = echarts.init(document.getElementById("leftThreeII"))
+		// 设置初始的指针角度
+		var angle = 0;
+		// 设置定时器，每隔一秒钟更新一次指针角度
+		setInterval(function() {
+			// 生成一个随机的指针角度，范围为0到360度
+			angle = Math.floor(Math.random() * 360);
+			// 更新echarts option中的指针角度
+			mychart3.setOption({
+				series: [{
+					data: [{
+						value: angle,
+						name: '风向',
+						detail: {
+							fontSize: 10
+						}
+					}]
+				}]
+			});
+		}, 2000);
+		var options = {
+			series: [{
+				type: 'gauge',
+				radius: '80%',
+				startAngle: 0,
+				endAngle: 360,
+				splitNumber: 36,
+				axisLine: {
+					lineStyle: {
+						color: [
+							[0.2, '#8fdba6'],
+							[0.8, '#f9a7a7'],
+							[1, '#ff6600']
+						],
+						width: 20,
+						shadowBlur: 0,
+						opacity: 0.8
+					}
+				},
+				axisTick: {
+					length: 10,
+					lineStyle: {
+						color: 'auto'
+					}
+				},
+				axisLabel: {
+					formatter: function(value) {
+						if (value === 90) {
+							return 'N'
+						} else if (value === 0) {
+							return 'E'
+						} else if (value === 180) {
+							return 'W'
+						} else if (value === 270) {
+							return 'S'
+						} else {
+							return ''
+						}
+					},
+					textStyle: {
+						color: '#aa007f',
+						fontSize: 20
+					}
+				},
+				pointer: {
+					width: 5,
+					length: '80%'
+				},
+				detail: {
+					show: false
+				},
+				data: [{
+					value: angle,
+					name: '风向',
+					detail: {
+						fontSize: 10
+					}
+				}]
+			}]
+		};
+		options && mychart3.setOption(options);
+
+		/*天气分析*/
+		var mychart = echarts.init(document.getElementById("rightThreeI"))
+		var options = {
+
+			title: {
+				text: "近30日天气状况统计",
+				left: '40%',
+				top: '10',
+				textStyle: {
+					color: '#ffffff',
+				},
+
+			},
+			legend: {
+				itemWidth: 25,
+				itemHeight: 15,
+				itemGap: 20,
+				data: ["晴", "多云", "小雨", "雷阵雨", "扬沙"],
+				left: '10%',
+				// orient:'vertical',
+				color: ['#63aa80', '#7eaa71', '#aa4020'],
+				formatter: function(r) {
+					return '{b|' + r + '}'
+
+				},
+				textStyle: {
+					color: 'pink',
+					rich: {
+						b: {
+							align: 'center',
+						}
+					},
+				},
+				left: 10,
+				top: 91,
+				width: '30%',
+				orient: 'vertical',
+
+
+			},
+			series: [{
+				type: 'pie',
+				roseType: 'radius',
+				radius: [22.5, 100],
+				startAngle: 125,
+				height: "80%",
+				center: ["60%", "70%"],
+				//标签引导线
+				labelLine: {
+					length: 2, //引导线第一段长度
+					length2: 5, //引导线第二段长度
+				},
+				label: { //这里没有汉字
+					formatter: function(r) {
+						return '{a|' + r.name + '\n' + r.value + '}';
+					},
+					color: ["#5aaa4e"],
+					fontsize: 14,
+					rich: {
+						a: {
+							align: 'center',
+							color: 'white',
+						},
+					},
+				},
+				itemStyle: {
+					borderRadius: 8
+				},
+				//roseType:'area',
+				data: [{
+						value: 8,
+						name: '晴',
+						color: '#c99946'
+					},
+					{
+						value: 6,
+						name: '多云',
+						color: '#aaaa7f'
+					},
+					{
+						value: 8,
+						name: '小雨',
+						color: '#aaaa7f'
+					},
+					{
+						value: 3,
+						name: '扬沙',
+						color: '#aaaa7f'
+					},
+					{
+						value: 5,
+						name: '雷阵雨',
+						color: '#aaaa7f'
+					},
+				],
+			}, ]
+
+		}
+		mychart.setOption(options)
+
+		/*紫外线指数分布*/
+		var mychart = echarts.init(document.getElementById("rightThreeII"))
+		var options = {
+
+			title: {
+				text: "近30日紫外线强弱统计",
+				left: '40%',
+				top: '10',
+				textStyle: {
+					color: '#ffffff',
+				},
+
+			},
+			tooltip: {
+				formatter: function(r) {
+					return r.name + '紫外线天数:' + r.value;
+				}
+			},
+			legend: {
+				itemWidth: 25,
+				itemHeight: 15,
+				itemGap: 20,
+				data: ["强", "一般", "较弱", "弱", "超强"],
+				left: '20%',
+				color: ['#63aa80', '#7eaa71', '#aa4020'],
+				formatter: function(r) {
+					return '{b|' + r + '}'
+				},
+				textStyle: {
+					color: 'pink',
+					rich: {
+						b: {
+							align: 'center',
+						}
+					},
+				},
+				left: 10,
+				top: 91,
+				width: '30%',
+				orient: 'vertical',
+			},
+			series: [{
+
+				type: 'pie',
+				radius: [0, 125],
+				center: ['60%', '70%'],
+				roseType: 'area',
+				itemStyle: {
+					borderRadius: 8
+				},
+				startAngle: 125,
+				height: "80%",
+				//标签引导线
+				labelLine: {
+					length: 10, //引导线第一段长度
+					length2: 10, //引导线第二段长度
+				},
+				label: { //这里没有汉字
+					show: false,
+					formatter: function(r) {
+						return '{a|' + r.name + '\n' + r.value + '}';
+					},
+					color: ["#5aaa4e"],
+					fontsize: 14,
+					rich: {
+						a: {
+							align: 'center',
+							color: 'white',
+						},
+					},
+
+
+				},
+				data: [{
+						value: 5,
+						name: '超强',
+						color: '#c99946'
+					},
+					{
+						value: 6,
+						name: '强',
+						color: '#aaaa7f'
+					},
+					{
+						value: 8,
+						name: '弱',
+						color: '#aaaa7f'
+					},
+					{
+						value: 6,
+						name: '一般',
+						color: '#aaaa7f'
+					},
+					{
+						value: 5,
+						name: '较弱',
+						color: '#aaaa7f'
+					},
+				],
+			}, ]
+
+		}
+		mychart.setOption(options)
+	</script>
+</html>
